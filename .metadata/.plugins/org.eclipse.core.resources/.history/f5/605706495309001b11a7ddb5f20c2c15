@@ -1,0 +1,13 @@
+package br.edu.ufam.icomp.lab_encapsulamento;
+
+public class Posicao {
+	private double latitude, longitude, altitude;
+	
+	public Posicao(double latitude, double longitude, double altitude) {
+		this.latitude = latitude;
+		this.longitude = longitude;
+		this.altitude = altitude;
+	}
+	
+	
+}

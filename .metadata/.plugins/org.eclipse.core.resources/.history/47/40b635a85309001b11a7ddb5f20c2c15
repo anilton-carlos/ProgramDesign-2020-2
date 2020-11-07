@@ -1,0 +1,10 @@
+package br.edu.ufam.icomp.lab_encapsulamento;
+
+public class GISMain {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

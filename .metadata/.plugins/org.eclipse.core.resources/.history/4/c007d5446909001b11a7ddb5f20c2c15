@@ -1,0 +1,17 @@
+package br.edu.ufam.icomp.lab_encapsulamento;
+
+public class GISMain {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Posicao posicao1 = new Posicao(-3.089242, -59.964874, 88.374);
+		System.out.println(posicao1.toString());
+		
+		Celular celular1 = new Celular(55, 92, 991236043);
+		System.out.println(celular1.getPosicao().toString());
+		
+		Carro carro1 = new Carro("OAE-7987");
+		System.out.println(carro1.getPlaca());
+	}
+
+}

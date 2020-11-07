@@ -1,0 +1,28 @@
+package br.edu.ufam.icomp.lab_excecoes;
+import java.util.Scanner;
+public class RoverMain {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Scanner scan = new Scanner(System.in);
+		while(true) {
+			
+		}
+		/*
+		try {
+			Coordenada coord0 = new Coordenada(31, 30, 1);
+		}
+		catch (CoordenadaNegativaException e) {
+			System.out.println(e);
+		}
+		catch (CoordenadaForaDosLimitesException e) {
+			System.out.println(e);
+		}
+		catch (DigitoInvalidoException e) {
+			System.out.println(e);
+		}
+		*/
+		scan.close();
+	}
+
+}

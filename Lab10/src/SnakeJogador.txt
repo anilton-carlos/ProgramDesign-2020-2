@@ -1,0 +1,167 @@
+import java.awt.Point;
+import java.util.*;
+
+public class SnakeJogador {
+    public class SnakePoint implements Comparable<SnakePoint> {
+        public Point coord;
+        private int ID;
+        public double distFromStart, distHeuristic, distTotal;
+        public SnakePoint parent;
+
+        public SnakePoint(Point coord, int ID) {
+            this.coord = coord;
+            distFromStart = 0;
+            distHeuristic = 0;
+            distTotal = 0;
+            this.ID = ID;
+            parent = null;
+        }
+
+        public int getID() {
+            return ID;
+        }
+
+        public double heuristicDistance(boolean type, SnakePoint destPoint) {
+            int x = this.coord.x - destPoint.coord.x;
+            int y = this.coord.y - destPoint.coord.y;
+            if (type) {
+                return Math.abs(x) + Math.abs(y);
+            } else {
+                return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+            }
+        }
+
+        public boolean isEmptyPoint() {
+            return jogo.isCelulaLivre(coord.x, coord.y);
+        }
+
+        public int compareTo(SnakePoint point) {
+            double distTotal = this.distTotal;
+            double anotherDist = point.distTotal;
+
+            double distance = distTotal - anotherDist;
+
+            return (distance > 0) ? 1 : (distance < 0) ? -1 : 0;
+        }
+    }
+
+    private Snake jogo;
+    private List<SnakePoint> boardGameList = new ArrayList<SnakePoint>();
+
+    public SnakeJogador(Snake jogo) {
+        this.jogo = jogo;
+        for (int i = 0; i < jogo.getLargura(); i++) {
+            for (int j = 0; j < jogo.getAltura(); j++) {
+                Point point = new Point(i, j);
+                SnakePoint boardPoint = new SnakePoint(point, i * jogo.getAltura() + j);
+                boardGameList.add(boardPoint);
+            }
+        }
+    }
+
+    public LinkedList<SnakePoint> aStarPath(SnakePoint start, SnakePoint destination) {
+        LinkedList<SnakePoint> closedPoints = new LinkedList<SnakePoint>();
+        PriorityQueue<SnakePoint> openPoints = new PriorityQueue<SnakePoint>();
+        /*
+        List<SnakePoint> unvisitedPoints = new ArrayList<SnakePoint>();
+        for (int i = 0; i < jogo.getAltura() * jogo.getLargura(); i++) {
+            unvisitedPoints.add(boardGameList.get(i));
+        }
+        */
+        List<SnakePoint> unvisitedPoints = boardGameList;
+        SnakePoint currentPoint = unvisitedPoints.remove(start.ID);
+        currentPoint.distFromStart = 0;
+        currentPoint.distHeuristic = currentPoint.heuristicDistance(true, destination);
+        currentPoint.distTotal = currentPoint.distTotal + currentPoint.distHeuristic;
+        currentPoint.parent = null;
+
+        while(currentPoint != destination){
+
+        }
+
+
+        return null;
+    }
+
+	private LinkedList<SnakePoint> searchPath(SnakePoint start, SnakePoint dest) {
+		LinkedList<SnakePoint> closedList = new LinkedList<SnakePoint>();
+		PriorityQueue<SnakePoint> openList = new PriorityQueue<SnakePoint>();
+
+		start.setDistFromStart(0);
+		start.setDistManhattan(manhattanDist(start, dest));
+		start.setParent(null);
+
+		openList.add(start);
+
+		while (openList.isEmpty() == false) {
+			SnakePoint actualPoint = openList.remove();
+			if (actualPoint.equal(dest)) {
+				LinkedList<SnakePoint> pathToDest = makePath(actualPoint);
+				return pathToDest;
+			}
+			if (openList.size() >= (jogo.getAltura() * jogo.getLargura() * 1000)) {
+				return null;
+			}
+			if (closedList.size() >= (jogo.getAltura() * jogo.getLargura() * 1000))
+				return null;
+			List<SnakePoint> neighborhood = actualPoint.getNeighborhood();
+
+			for (int i = 0; i < neighborhood.size(); i++) {
+				SnakePoint neighborPoint = neighborhood.get(i);
+
+				int distFromStart = actualPoint.getDistFromStart() + manhattanDist(actualPoint, neighborPoint);
+
+				boolean inOpenList = openList.contains(neighborPoint);
+				boolean inClosedList = closedList.contains(neighborPoint);
+
+				if (!inOpenList) {
+					if (!inClosedList) {
+						neighborPoint.setParent(actualPoint);
+						neighborPoint.setDistFromStart(distFromStart);
+						neighborPoint.setDistManhattan(manhattanDist(neighborPoint, dest));
+
+						if (neighborPoint.isEmptyPoint()) {
+							openList.add(neighborPoint);
+						}
+					}
+				} else {
+					i++;
+					i--;
+				}
+			}
+			closedList.add(actualPoint);
+		}
+		return null;
+	}
+
+
+
+
+    public char getDirecao() {
+        /*
+         * IMPLEMENTE AQUI A SUA SOLUÇÃO PARA O JOGO
+         */
+
+        ArrayList<Character> possiveisDirecoes = new ArrayList<Character>(4);
+        Point cabeca = jogo.getSegmentos().getFirst();
+
+        // Adiciona as possíveis direções na lista
+        if (jogo.isCelulaLivre(cabeca.x, cabeca.y - 1))
+            possiveisDirecoes.add('C'); // Cima
+        if (jogo.isCelulaLivre(cabeca.x + 1, cabeca.y))
+            possiveisDirecoes.add('D'); // Direita
+        if (jogo.isCelulaLivre(cabeca.x, cabeca.y + 1))
+            possiveisDirecoes.add('B'); // Baixo
+        if (jogo.isCelulaLivre(cabeca.x - 1, cabeca.y))
+            possiveisDirecoes.add('E'); // Esquerda
+
+        // Não existe mais nenhuma direção disponível
+        if (possiveisDirecoes.size() == 0)
+            return 'N';
+
+        // Pega um número aleatório entre 0 e o tamanho da lista e retorna a direção
+        int posicao = new Random().nextInt(possiveisDirecoes.size());
+        return possiveisDirecoes.get(posicao);
+    }
+
+}

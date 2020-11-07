@@ -1,0 +1,66 @@
+package br.edu.ufam.icomp.lab_excecoes;
+import java.util.Scanner;
+public class RoverMain {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Scanner scan = new Scanner(System.in);
+		String acao;
+		int posX, posY, digito;
+		System.out.println("Insira o tamanho do caminho: ");
+		Caminho caminho = new Caminho(scan.nextInt());
+		System.out.println("Insira uma ação");
+		acao = scan.next();
+		System.out.println("Acao: " + acao);
+		
+		//while(acao != "exit") {
+			//acao = scan.next();
+			// CRIAR COORDENADA E INSERIR
+			if(acao == "i\n") {
+				System.out.print("PosX: ");
+				posX = scan.nextInt();
+				System.out.print("PosY: ");
+				posY = scan.nextInt();
+				System.out.print("Digito: ");
+				digito = scan.nextInt();
+				
+				try {
+					Coordenada coordenada = new Coordenada(posX, posY, digito);
+					System.out.println("coord criada");
+					caminho.addCoordenada(coordenada);
+					System.out.println("coord inserida");
+				}
+				catch (CoordenadaNegativaException e) {
+					System.out.println(e);
+					caminho.reset();
+				}
+				catch (CoordenadaForaDosLimitesException e) {
+					System.out.println(e);
+					caminho.reset();
+				}
+				catch (DigitoInvalidoException e) {
+					System.out.println(e);
+					caminho.reset();
+				}
+				catch (TamanhoMaximoExcedidoException e) {
+					System.out.println(e);
+					caminho.reset();
+				}
+				catch (DistanciaEntrePontosExcedidaException e) {
+					System.out.println(e);
+					caminho.reset();
+				}
+			}
+			else if(acao == "e") {
+				System.out.println(caminho.toString());
+			} else {
+				System.out.println("Insira uma entrada válida.");
+			}
+			
+			//acao = scan.next();
+			//System.out.println(acao);
+		//}
+		scan.close();
+	}
+
+}

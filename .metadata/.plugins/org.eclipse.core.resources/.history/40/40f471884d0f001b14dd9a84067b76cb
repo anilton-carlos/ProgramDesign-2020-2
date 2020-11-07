@@ -1,0 +1,52 @@
+package br.edu.ufam.icomp.lab_excecoes;
+import java.util.Scanner;
+public class RoverMain {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Scanner scan = new Scanner(System.in);
+		String acao;
+		int posX, posY, digito;
+		System.out.println("Insira o tamanho do caminho: ");
+		Caminho caminho = new Caminho(scan.nextInt());
+		acao = scan.next();
+		while(acao != "exit") {
+			//acao = scan.next();
+			// CRIAR COORDENADA E INSERIR
+			if(acao == "Inserir Coordenada") {
+				posX = scan.nextInt();
+				posY = scan.nextInt();
+				digito = scan.nextInt();
+				
+				try {
+					Coordenada coordenada = new Coordenada(posX, posY, digito);
+					caminho.addCoordenada(coordenada);
+				}
+				catch (CoordenadaNegativaException e) {
+					System.out.println(e);
+					caminho.reset();
+				}
+				catch (CoordenadaForaDosLimitesException e) {
+					System.out.println(e);
+					caminho.reset();
+				}
+				catch (DigitoInvalidoException e) {
+					System.out.println(e);
+					caminho.reset();
+				}
+				catch (TamanhoMaximoExcedidoException e) {
+					System.out.println(e);
+					caminho.reset();
+				}
+				catch (DistanciaEntrePontosExcedidaException e) {
+					System.out.println(e);
+					caminho.reset();
+				}
+			} else if(acao == "Exibir dados") {
+				
+			}
+		}
+		scan.close();
+	}
+
+}

@@ -1,0 +1,23 @@
+package br.edu.ufam.icomp.lab_encapsulamento;
+
+public class Celular extends Localizavel{
+	private int codPais, codArea, numero;
+	
+	public Celular(int codPais, int codArea, int numero) {
+		super();
+		if(codPais >= 1 && codPais <= 1999) {
+			this.codPais = codPais;
+		}
+		if(codArea >= 10 && codArea <= 99) {
+			this.codArea = codArea;
+		}
+		if(numero >= 10000000 && numero <= 999999999) {
+			this.numero = numero;
+		}
+	}
+	public final void setCodPais(int codPais) {
+		if(codPais >= 1 && codPais <= 1999) {
+			this.codPais = codPais;
+		}
+	}
+}
